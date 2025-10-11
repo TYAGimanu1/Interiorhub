@@ -26,8 +26,7 @@ const Header = () => {
           ☰
         </button>
       <nav
-          
-          
+          className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}
           aria-label="Primary Navigation"
         >
         {console.log('Nav class:', `${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`)} {/* Debugging log */}
