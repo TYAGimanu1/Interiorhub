@@ -2,27 +2,12 @@
 import React from 'react';
 import Link from 'next/link';
 // Import the CSS Module
-import styles from './page.module.css'; 
+import styles from '@/styles/page.module.css'; 
 
 // NOTE: In a real Next.js application, you would use 'next/image' for images 
 // and handle video optimization.
 
-const Navigation = () => (
-  <header className={styles.header} aria-label="Main Navigation">
-    <div className={styles.headerContent}>
-      <div className={styles.logo} aria-label="Ashleys Logo">
-        ASHLEYS
-      </div>
-      <nav className={styles.nav} aria-label="Primary Navigation">
-        <Link href="/" className={styles.navLink}>Home</Link>
-        <Link href="/work" className={styles.navLink}>Work</Link>
-        <Link href="/testimonials" className={styles.navLink}>Testimonials</Link>
-        <Link href="/blog" className={styles.navLink}>News & Blog</Link>
-        <Link href="/contact" className={styles.navLink}>Contact</Link>
-      </nav>
-    </div>
-  </header>
-);
+
 
 const HeroSection = () => (
   <div className={styles.heroSection}>
@@ -62,14 +47,14 @@ const AboutSection = () => (
         
           <div className={styles.founder}>
             <div className={styles.founderImage}>
-              <img className={styles.founderImage} src="https://media.istockphoto.com/id/1145780239/photo/dark-interior-with-open-kitchen.jpg?s=612x612&w=0&k=20&c=sigz2x-O26RYwC49hKqozEJxrFX4CR9zqiTCTSXx9e4=" alt="Luxury Interior Design"/>
+              <img className={styles.founderImage} src="https://t4.ftcdn.net/jpg/03/78/43/25/360_F_378432516_6IlKiCLDAqSCGcfc6o8VqWhND51XqfFm.jpg"/>
               </div> {/* Image Placeholder */}
             <p className={styles.founderName}>Alankar Tyagi</p>
           </div>
           <div className={styles.founder}>
             <div className={styles.founderImage}>
-              <img className={styles.founderImage} src="https://media.istockphoto.com/id/1145780239/photo/dark-interior-with-open-kitchen.jpg?s=612x612&w=0&k=20&c=sigz2x-O26RYwC49hKqozEJxrFX4CR9zqiTCTSXx9e4=" alt="Luxury Interior Design"/></div> {/* Image Placeholder */}
-            <p className={styles.founderName}>Alankar Tyagi</p>
+              <img className={styles.founderImage} src="https://www.shutterstock.com/image-photo/biometric-passport-photo-attraktiv-female-260nw-2207163201.jpg"/></div> {/* Image Placeholder */}
+            <p className={styles.founderName}>Alexa Tyagi</p>
           </div>
         </div>
       </div>
@@ -79,11 +64,11 @@ const AboutSection = () => (
 
 const ProjectsSection = () => {
   const categories = [
-    { name: 'Residences', count: 12 },
-    { name: 'Offices', count: 6 },
-    { name: 'Clubhouses & Showflats', count: 4 },
-    { name: 'Architecture', count: 3 },
-     { name: 'Architecture', count: 8 },
+    { name: 'Residences', count: 12, img: "https://www.squareyards.com/blog/wp-content/uploads/2023/11/what-is-Residential-Buildings.jpg" },
+    { name: 'Offices', count: 6, img: "https://cdn.decorilla.com/online-decorating/wp-content/uploads/2024/10/Office-interior-design-services-contemporary-results-by-Decorilla-1024x683.jpeg?width=900" },
+    { name: 'Clubhouses & Showflats', count: 4, img: "https://i.pinimg.com/originals/98/5d/71/985d7114e032ca660313cffbf0fa4e47.jpg" },
+    { name: 'Architecture', count: 3, img: "https://thearchitectsdiary.com/wp-content/uploads/2024/05/interior-design-concept-5-jpg.webp" },
+  
   ];
 
   return (
@@ -97,7 +82,13 @@ const ProjectsSection = () => {
               href="/work" 
               className={styles.projectCard}
             >
-              <div className={styles.projectOverlay}></div>
+              <div className={styles.projectOverlay}>
+                <img 
+                  src={cat.img}
+                  alt={cat.name}
+                  style={{ width: '100%', height: '55vh', objectFit: 'cover' }}
+                />
+              </div>
               
               <div className={styles.projectContent}>
                 <h3 className={styles.projectTitle}>
@@ -144,57 +135,16 @@ const ContactFormSection = () => (
     </div>
   </section>
 );
-const Footer = () => (
-    <footer className={styles.footer}>
-        <div className={styles.footerGrid}>
-            <div>
-                <h4 className={styles.footerTitle}>Our Work</h4>
-                <ul className={styles.footerList}>
-                    <li><Link href="/work#residences" className={styles.footerLink}>Residences</Link></li>
-                    <li><Link href="/work#offices" className={styles.footerLink}>Offices</Link></li>
-                    <li><Link href="/work#clubhouses" className={styles.footerLink}>Clubhouses & Showflats</Link></li>
-                    <li><Link href="/work#architecture" className={styles.footerLink}>Architecture</Link></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h4 className={styles.footerTitle}>Contact</h4>
-                <div className={styles.footerList}>
-                    <p>For Clients & Media: <br/> **+91 77100 10617**</p>
-                    <p>For Vendors: <br/> **+91 22 25002411**</p>
-                </div>
-            </div>
-            
-            <div>
-                <h4 className={styles.footerTitle}>Careers</h4>
-                <p className={styles.footerList}>reach@theashleys.co.in</p>
-            </div>
-            
-            <div>
-                <h4 className={styles.footerTitle}>Follow Us</h4>
-                <div className={styles.socialIcons}>
-                    <div className={styles.socialIcon}></div>
-                    <div className={styles.socialIcon}></div>
-                    <div className={styles.socialIcon}></div>
-                </div>
-            </div>
-        </div>
-        
-        <div className={styles.copyright}>
-            Copyright © 2025 Ashleys
-        </div>
-    </footer>
-);
+
 
 export default function Home() {
   return (
     <>
-      <Navigation />
       <HeroSection />
       <AboutSection />
       <ProjectsSection />
       <ContactFormSection />
-      <Footer />
+     
     </>
   );
 }

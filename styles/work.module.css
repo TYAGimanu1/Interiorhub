@@ -1,0 +1,188 @@
+/* app/work/work.module.css */
+
+:root {
+    --ashleys-black: #1a1a1a;
+    --ashleys-gold: #c19a6b;
+}
+
+/* --- General Section Styling --- */
+.workContainer {
+    max-width: 80rem; /* Adjusted for wider content area */
+    margin: 0 auto;
+    padding: 6rem 1rem 4rem; /* Top padding for header clearance */
+}
+
+.pageTitle {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--ashleys-black);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* --- Filter/Category Tabs --- */
+.categoryTabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* space between tabs */
+    margin-bottom: 3rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+}
+
+.categoryButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 400;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.categoryButton:hover {
+    color: var(--ashleys-gold);
+}
+
+.activeButton {
+    font-weight: 600;
+    color: var(--ashleys-gold);
+}
+
+/* Underline Animation Effect */
+.categoryButton::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem; /* Position below the text, above the border */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--ashleys-gold);
+    transition: width 0.3s ease;
+}
+
+.activeButton::after {
+    width: 100%; /* Full width when active */
+}
+
+
+/* --- Project Grid and Animation --- */
+.projectGrid {
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    position: relative;
+  
+
+    flex-wrap: wrap;
+    min-height: 40vh; /* Ensure space for content */
+}
+
+.projectCard {
+    background-color: #f4f4f4;
+    overflow: hidden;
+    width: 30%;
+    position: relative;
+    /* Animation: Fade-in effect */
+    opacity: 0;
+    transform: translateY(20px);
+    animation-fill-mode: forwards;
+    animation-name: projectFadeIn;
+    animation-duration: 0.5s;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.projectCard:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.projectImage {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.projectCard:hover .projectImage {
+    transform: scale(1.05);
+}
+
+.projectInfo {
+    padding: 1rem;
+    text-align: center;
+}
+
+.projectTitle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--ashleys-black);
+    margin-bottom: 0.25rem;
+}
+
+.projectCategory {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+/* Keyframes for the fade-in animation */
+@keyframes projectFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* --- Hero Section --- */
+.heroSection {
+    position: relative;
+    height: 100vh;
+    background-color: black;
+}
+
+.heroVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+}
+
+.heroContent {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 1rem;
+}
+
+.heroTitle {
+    font-size: 02.5rem; /* text-4xl */
+    line-height: 1.1;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+@media (min-width: 768px) { .heroTitle { font-size: 4rem; } }
+@media (min-width: 1024px) { .heroTitle { font-size: 4.5rem; } }
+
+.heroSubtitle {
+    font-size: 1.25rem; /* text-xl */
+    font-family: var(--font-serif);
+}
+@media (min-width: 768px) { .heroSubtitle { font-size: 1.5rem; } }
+
+.heroImage {
+    width: 100%;
+    height: auto;
+    max-height: 500px; /* Example max height */
+    object-fit: cover;
+}
+

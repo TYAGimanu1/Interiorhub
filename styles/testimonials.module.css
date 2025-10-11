@@ -1,0 +1,104 @@
+/* app/testimonials/testimonials.module.css */
+
+:root {
+    --ashleys-black: #1a1a1a;
+    --ashleys-gold: #c19a6b;
+    --font-serif: Georgia, serif;
+    --font-sans: Arial, sans-serif;
+}
+
+/* --- Page Layout --- */
+.container {
+    max-width: 75rem; /* Max width for content */
+    margin: 0 auto;
+    padding: 6rem 1rem 4rem; /* Top padding for header clearance */
+}
+
+.pageTitle {
+    font-size: 3rem;
+    font-weight: 300;
+    color:white;
+    margin-bottom: 3rem;
+    text-align: center;
+    border-bottom: 2px solid var(--ashleys-gold);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+/* --- Testimonial Grid --- */
+.testimonialGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem; /* Spacing between cards */
+    padding: 2rem 0;
+}
+
+/* --- Individual Testimonial Card --- */
+.testimonialCard {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 2.5rem;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.testimonialCard:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.quoteIcon {
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--ashleys-gold);
+    margin-bottom: 1rem;
+    font-family: var(--font-serif);
+}
+
+.quoteText {
+    font-size: 1.25rem; /* Large, readable text */
+    line-height: 1.6;
+    color: var(--ashleys-black);
+    margin-bottom: 2rem;
+    flex-grow: 1; /* Pushes the footer to the bottom */
+}
+
+/* --- Author Info with Image --- */
+.authorInfo {
+    display: flex; /* Use flexbox for image and text alignment */
+    align-items: center; /* Vertically center image with text */
+    border-top: 1px solid #eeeeee;
+    padding-top: 1rem;
+    margin-top: auto; /* Push to bottom if content is short */
+}
+
+.clientImage {
+    width: 60px; /* Fixed width for client image */
+    height: 60px; /* Fixed height */
+    border-radius: 50%; /* Make it round */
+    object-fit: cover; /* Ensure image covers the area without distortion */
+    margin-right: 1rem; /* Space between image and text */
+    flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+.authorDetailsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.authorName {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--ashleys-black);
+}
+
+.projectDetails { /* Renamed for clarity, was authorDetails */
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.25rem;
+}

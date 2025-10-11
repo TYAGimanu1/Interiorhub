@@ -1,0 +1,140 @@
+/* app/contact/contact.module.css */
+
+:root {
+    --ashleys-black: #1a1a1a;
+    --ashleys-gold: #c19a6b;
+    --font-sans: Arial, sans-serif;
+}
+
+/* --- Page Layout --- */
+.container {
+    max-width: 85rem;
+    margin: 0 auto;
+    padding: 6rem 1rem 6rem;
+}
+
+.pageTitle {
+    font-size: 3rem;
+    font-weight: 300;
+    color: white;
+    margin-bottom: 3rem;
+    text-align: center;
+    border-bottom: 2px solid var(--ashleys-gold);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+/* --- Content Grid: Form + Info --- */
+.contactGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+}
+@media (min-width: 1024px) { /* Adjust for desktop layout */
+    .contactGrid {
+        grid-template-columns: 2fr 1fr; /* Form takes 2/3, Info takes 1/3 */
+    }
+}
+
+/* --- Contact Form Styles --- */
+.contactFormContainer {
+    padding-right: 2rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+@media (min-width: 640px) {
+    .formGroup {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.input, .select, .textarea {
+    padding: 1rem;
+    border: 1px solid #d1d5db;
+    outline: none;
+    font-size: 1rem;
+}
+
+.input:focus, .select:focus, .textarea:focus {
+    border-color: var(--ashleys-gold);
+    box-shadow: 0 0 0 1px var(--ashleys-gold);
+}
+
+.textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.submitButton {
+    width: 100%;
+    background-color: var(--ashleys-black);
+    color: white;
+    padding: 1rem 0;
+    font-size: 1.125rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+    background-color: var(--ashleys-gold);
+}
+
+/* --- Contact Info Styles --- */
+.contactInfoContainer {
+    padding: 2rem;
+    background-color: #f8f8f8;
+    border-left: 5px solid var(--ashleys-gold); /* Accent line */
+}
+
+.infoBlock {
+    margin-bottom: 2rem;
+}
+
+.infoBlock h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ashleys-black);
+    margin-bottom: 0.75rem;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 0.5rem;
+}
+
+.infoBlock p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ashleys-black);
+    margin-bottom: 0.5rem;
+}
+
+.emailLink, .phoneLink {
+    color: var(--ashleys-black);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.emailLink:hover, .phoneLink:hover {
+    color: var(--ashleys-gold);
+    text-decoration: underline;
+}
+
+.addressMap {
+    margin-top: 3rem;
+    color: #1a1a1a;
+}

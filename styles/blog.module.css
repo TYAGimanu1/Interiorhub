@@ -1,0 +1,100 @@
+/* app/blog/blog.module.css */
+
+:root {
+    --ashleys-black: #1a1a1a;
+    --ashleys-gold: #c19a6b;
+    --color-light-gray: #f9f9f9;
+    --font-serif: Georgia, serif;
+    --font-sans: Arial, sans-serif;
+}
+
+/* --- Page Layout --- */
+.container {
+    max-width: 75rem;
+    margin: 0 auto;
+    padding: 6rem 1rem 6rem;
+}
+
+.pageTitle {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--ashleys-black);
+    margin-bottom: 3rem;
+    text-align: center;
+    border-bottom: 2px solid var(--ashleys-gold);
+    display: inline-block;
+    padding-bottom: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+/* --- Blog Grid --- */
+.blogGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 3rem;
+}
+
+/* --- Individual Post Card --- */
+.postCard {
+    display: block; /* Make the whole card clickable */
+    text-decoration: none;
+    color: var(--ashleys-black);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    background-color: #ffffff;
+    border: 1px solid #eee;
+}
+
+.postCard:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.imageContainer {
+    width: 100%;
+    height: 250px; /* Fixed height for consistent grid look */
+    overflow: hidden;
+}
+
+.postImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.postCard:hover .postImage {
+    transform: scale(1.05);
+}
+
+.postContent {
+    padding: 1.5rem;
+}
+
+.postCategory {
+    font-size: 0.875rem;
+    color: var(--ashleys-gold);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.postTitle {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+
+.postExcerpt {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.postMeta {
+    font-size: 0.75rem;
+    color: #999;
+}
