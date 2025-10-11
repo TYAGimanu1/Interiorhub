@@ -98,3 +98,21 @@
     font-size: 0.75rem;
     color: #999;
 }
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 4rem 1rem;
+    }
+
+    .blogGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .postCard {
+        padding: 1rem;
+    }
+}

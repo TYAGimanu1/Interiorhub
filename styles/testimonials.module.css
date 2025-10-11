@@ -102,3 +102,25 @@
     color: #666;
     margin-top: 0.25rem;
 }
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 4rem 1rem;
+    }
+
+    .pageTitle {
+        font-size: 2rem;
+    }
+
+    .testimonialGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .testimonialCard {
+        padding: 1.5rem;
+    }
+}

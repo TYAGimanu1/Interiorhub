@@ -138,3 +138,21 @@
     margin-top: 3rem;
     color: #1a1a1a;
 }
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 4rem 1rem;
+    }
+
+    .contactGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form {
+        gap: 1rem;
+    }
+}

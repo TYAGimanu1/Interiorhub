@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react';
 import Link from 'next/link';
 // Import the CSS Module
 import styles from '@/styles/page.module.css'; 
-const header = () => {
+const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    console.log('Menu open state:', !isMenuOpen); // Debugging log
+  };
+
   return (
 
        <div>
@@ -11,7 +18,19 @@ const header = () => {
       <div className={styles.logo} aria-label="Ashleys Logo">
         ASHLEYS
       </div>
-      <nav className={styles.nav} aria-label="Primary Navigation">
+      <button
+          className={styles.menuToggle}
+          aria-label="Toggle Navigation Menu"
+          onClick={toggleMenu}
+        >
+          ☰
+        </button>
+      <nav
+          
+          
+          aria-label="Primary Navigation"
+        >
+        {console.log('Nav class:', `${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`)} {/* Debugging log */}
         <Link href="/" className={styles.navLink}>Home</Link>
         <Link href="/work" className={styles.navLink}>Work</Link>
         <Link href="/testimonials" className={styles.navLink}>Testimonials</Link>
@@ -26,4 +45,4 @@ const header = () => {
   )
 }
 
-export default header
+export default Header
