@@ -1,3 +1,4 @@
+// pages/home/[category].js
 import { useRouter } from 'next/router';
 import styles from '@/styles/category.module.css';
 import Link from 'next/link';
@@ -7,10 +8,9 @@ import { getBaseUrl } from '@/lib/utils'; // Utility to handle Vercel's environm
 const CategoryPage = ({ projects }) => {
   const router = useRouter();
   const { category } = router.query;
-
+  
   // Filter projects based on the category from the router query
   const filteredProjects = projects.filter(
-    // Compare lowercased versions for safer matching
     (project) => project.category && category && project.category.toLowerCase() === category.toLowerCase()
   );
 
@@ -38,7 +38,6 @@ const CategoryPage = ({ projects }) => {
                   className={styles.projectImage}
                   width={300}
                   height={200}
-                  // The 'Image' component needs explicit width/height
                 />
                 <h2 className={styles.projectTitle}>{project.title}</h2>
              
@@ -52,13 +51,13 @@ const CategoryPage = ({ projects }) => {
 
 // --- Build Function: Generates all unique category paths at build time ---
 export async function getStaticPaths() {
-  // FIX 1: Use getBaseUrl() utility to get the correct build-time domain
+  // FIX: Use getBaseUrl() utility for resilient fetching during the build.
   const url = `${getBaseUrl()}/api/projects`; 
   
   try {
     const res = await fetch(url);
     
-    // CRITICAL FIX: Check for successful response BEFORE parsing JSON
+    // CRITICAL: Check for successful response BEFORE parsing JSON
     if (!res.ok) {
         console.error(`[getStaticPaths in [category].js] API Failure. Status: ${res.status}`);
         return { paths: [], fallback: false };
@@ -84,13 +83,13 @@ export async function getStaticPaths() {
 
 // --- Build Function: Provides all project data as props ---
 export async function getStaticProps() {
-  // FIX 2: Correct URL construction: remove the leading '$' and use getBaseUrl()
+  // FIX: Use getBaseUrl() utility for resilient fetching during the build.
   const url = `${getBaseUrl()}/api/projects`;
   
   try {
     const res = await fetch(url);
   
-    // CRITICAL FIX: Check for successful response BEFORE parsing JSON
+    // CRITICAL: Check for successful response BEFORE parsing JSON
     if (!res.ok) {
        console.error(`[getStaticProps in [category].js] API Failure. Status: ${res.status}`);
        return { 
