@@ -78,7 +78,7 @@ const ProjectDetails = ({ projects }) => {
 
 
 export async function getStaticPaths() {
-  const url = `${getBaseUrl()}/api/projects`;
+  const url = `${NEXT_PUBLIC_VERCEL_URL}/api/projects`;
   
   try {
     const res = await fetch(url);
@@ -105,7 +105,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-    const url = `${getBaseUrl()}/api/projects`;
+    const url = `${NEXT_PUBLIC_VERCEL_URL}/api/projects`;
     
     try {
         const res = await fetch(url);

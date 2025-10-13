@@ -52,7 +52,7 @@ const CategoryPage = ({ projects }) => {
 // --- Build Function: Generates all unique category paths at build time ---
 export async function getStaticPaths() {
   // FIX: Use getBaseUrl() utility for resilient fetching during the build.
-  const url = `${getBaseUrl()}/api/projects`; 
+  const url = `${NEXT_PUBLIC_VERCEL_URL}/api/projects`; 
   
   try {
     const res = await fetch(url);
@@ -84,7 +84,7 @@ export async function getStaticPaths() {
 // --- Build Function: Provides all project data as props ---
 export async function getStaticProps() {
   // FIX: Use getBaseUrl() utility for resilient fetching during the build.
-  const url = `${getBaseUrl()}/api/projects`;
+  const url = `${NEXT_PUBLIC_VERCEL_URL}/api/projects`;
   
   try {
     const res = await fetch(url);
