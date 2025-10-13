@@ -43,7 +43,7 @@ export default function WorkPage() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`${getBaseUrl()}/api/projects`);
+        const response = await fetch("https://interiorhub.vercel.app/api/projects");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
