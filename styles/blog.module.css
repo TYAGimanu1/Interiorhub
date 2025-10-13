@@ -18,7 +18,7 @@
 .pageTitle {
     font-size: 3rem;
     font-weight: 300;
-    color: var(--ashleys-black);
+    color: white;
     margin-bottom: 3rem;
     text-align: center;
     border-bottom: 2px solid var(--ashleys-gold);
@@ -103,6 +103,7 @@
 @media (max-width: 768px) {
     .container {
         padding: 4rem 1rem;
+        margin-top: 5vh;
     }
 
     .blogGrid {

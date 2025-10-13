@@ -3,10 +3,10 @@ import React from 'react';
 import Link from 'next/link';
 // Import the CSS Module
 import styles from '@/styles/page.module.css'; 
+import { Router } from 'next/router';
 
 // NOTE: In a real Next.js application, you would use 'next/image' for images 
 // and handle video optimization.
-
 
 
 const HeroSection = () => (
@@ -15,7 +15,7 @@ const HeroSection = () => (
     <img className={styles.heroImage} src="https://media.istockphoto.com/id/1145780239/photo/dark-interior-with-open-kitchen.jpg?s=612x612&w=0&k=20&c=sigz2x-O26RYwC49hKqozEJxrFX4CR9zqiTCTSXx9e4=" alt="Luxury Interior Design"/>
     <div className={styles.heroContent}>
       <h1 className={styles.heroTitle}>
-        Luxury Interior Designers In Mumbai
+        Luxury Interior Designers In Jaipur
       </h1>
       <p className={styles.heroSubtitle}>ASHLEYS</p>
     </div>
@@ -30,7 +30,7 @@ const SectionTitle = ({ children }) => (
 
 const AboutSection = () => (
   <section className={`${styles.section} ${styles.aboutSection}`}>
-    <SectionTitle>About Ashleys</SectionTitle>
+    <SectionTitle className={styles.sectiontitle}>About Ashleys</SectionTitle>
     <div className={styles.aboutGrid}>
       <div className={styles.aboutText}>
         <p>Ashleys is a boutique firm set up by Pooja and Arbaysis Ashley, brilliant young professional luxury interior designers in Mumbai. Established in 2008, this architecture and interior design firm has been on a soaring trajectory ever since.</p>
@@ -42,7 +42,7 @@ const AboutSection = () => (
       </div>
       <div className="flex flex-col justify-between">
         
-        <h1>Founder</h1>
+       <SectionTitle>Founder</SectionTitle>
         <div className={styles.founders}>
         
           <div className={styles.founder}>
@@ -68,7 +68,6 @@ const ProjectsSection = () => {
     { name: 'Offices', count: 6, img: "https://cdn.decorilla.com/online-decorating/wp-content/uploads/2024/10/Office-interior-design-services-contemporary-results-by-Decorilla-1024x683.jpeg?width=900" },
     { name: 'Clubhouses & Showflats', count: 4, img: "https://i.pinimg.com/originals/98/5d/71/985d7114e032ca660313cffbf0fa4e47.jpg" },
     { name: 'Architecture', count: 3, img: "https://thearchitectsdiary.com/wp-content/uploads/2024/05/interior-design-concept-5-jpg.webp" },
-  
   ];
 
   return (
@@ -76,28 +75,81 @@ const ProjectsSection = () => {
       <div className="max-w-7xl mx-auto">
         <SectionTitle>Selected Projects</SectionTitle>
         <div className={styles.projectGrid}>
-          {categories.map((cat) => (
-            <Link 
-              key={cat.name} 
-              href="/work" 
+        
+            <Link
+              href={`/home/Residences`} 
               className={styles.projectCard}
             >
               <div className={styles.projectOverlay}>
                 <img 
-                  src={cat.img}
-                  alt={cat.name}
-                  style={{ width: '100%', height: '55vh', objectFit: 'cover' }}
+                  src="https://www.squareyards.com/blog/wp-content/uploads/2023/11/what-is-Residential-Buildings.jpg"
+                  alt="sjh"
+                  style={{ width: '100%', height: '20rem', objectFit: 'cover' }}
                 />
               </div>
-              
               <div className={styles.projectContent}>
                 <h3 className={styles.projectTitle}>
-                  {cat.name}
+                 Residences
                 </h3>
-                <p className={styles.projectCount}>{cat.count} Projects</p>
+                <p className={styles.projectCount}> Projects</p>
               </div>
             </Link>
-          ))}
+            <Link
+              href={`/home/Offices`} 
+              className={styles.projectCard}
+            >
+              <div className={styles.projectOverlay}>
+                <img 
+                  src="https://cdn.decorilla.com/online-decorating/wp-content/uploads/2024/10/Office-interior-design-services-contemporary-results-by-Decorilla-1024x683.jpeg?width=900"
+                  alt="Office"
+                  style={{ width: '100%', height: '20rem', objectFit: 'cover' }}
+                />
+              </div>
+              <div className={styles.projectContent}>
+                <h3 className={styles.projectTitle}>
+                 Offices
+                </h3>
+                <p className={styles.projectCount}> Projects</p>
+              </div>
+            </Link>
+            <Link
+              href={`/home/Clubhouse and Show Flat`} 
+              className={styles.projectCard}
+            >
+              <div className={styles.projectOverlay}>
+                <img 
+                  src="https://i.pinimg.com/originals/98/5d/71/985d7114e032ca660313cffbf0fa4e47.jpg"
+                  alt="Office"
+                  style={{ width: '100%', height: '20rem', objectFit: 'cover' }}
+                />
+              </div>
+              <div className={styles.projectContent}>
+                <h3 className={styles.projectTitle}>
+                 Clubhouses & Showflats
+                </h3>
+                <p className={styles.projectCount}> Projects</p>
+              </div>
+            </Link>
+            <Link
+              href={`/home/Architecture`} 
+              className={styles.projectCard}
+            >
+              <div className={styles.projectOverlay}>
+                <img 
+                  src="https://thearchitectsdiary.com/wp-content/uploads/2024/05/interior-design-concept-5-jpg.webp"
+                  alt="Office"
+                  style={{ width: '100%', height: '20rem', objectFit: 'cover' }}
+                />
+              </div>
+              <div className={styles.projectContent}>
+                <h3 className={styles.projectTitle}>
+                  Architecture
+                </h3>
+                <p className={styles.projectCount}> Projects</p>
+              </div>
+            </Link>
+            
+          
         </div>
       </div>
     </section>

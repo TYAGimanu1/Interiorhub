@@ -107,6 +107,7 @@
 @media (max-width: 768px) {
     .container {
         padding: 4rem 1rem;
+        margin-top: 5vh;
     }
 
     .pageTitle {

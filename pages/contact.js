@@ -2,25 +2,49 @@
 'use client'; // Essential for client-side interactivity like form handling
 
 import React, { useState } from 'react';
+import axios from 'axios';
 import styles from '@/styles/contact.module.css';
 
 // --- Contact Form Component ---
 const ContactForm = () => {
-    // State to handle form submission (optional, but good practice)
+    const [formData, setFormData] = useState({
+        firstname: '',
+        lastname: '',
+        email: '',
+        phn: '', // RENAMED: Changed from 'phone' to 'phn' to match DB column
+        category: '',
+        userdescription: '',
+    });
+
     const [status, setStatus] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('Submitting...');
-        
-        // --- REAL FORM LOGIC GOES HERE ---
-        // In a real Next.js application, you would use 'fetch' to send this data 
-        // to an API route (e.g., /api/contact) or an external service (Formspree, etc.)
-        
-        setTimeout(() => {
-            setStatus('Thank you for your enquiry. We will be in touch shortly!');
-            // e.target.reset(); // Uncomment to clear form fields after success
-        }, 2000);
+
+        try {
+            // UPDATED: Corrected endpoint to lowercase '/api/saveuser'
+            const response = await axios.post('/api/saveUser', formData); 
+            
+            // Success check using standard HTTP status codes
+            if (response.status === 201 || response.status === 200) { 
+                setStatus('Thank you! Your message has been sent.');
+                // Clear form data using the correct keys
+                setFormData({ firstname: '', lastname: '', email: '', phn: '', category: '', userdescription: '' }); 
+            } else {
+                setStatus('Failed to send your message. Server responded unexpectedly.');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            // Grab detailed error message from the server response if available
+            const errorMessage = error.response?.data?.details || 'An error occurred. Please try again later.';
+            setStatus(errorMessage);
+        }
     };
 
     return (
@@ -28,19 +52,53 @@ const ContactForm = () => {
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', fontWeight: '400' }}>
                 SEND US AN ENQUIRY
             </h2>
-            
             <form className={styles.form} onSubmit={handleSubmit}>
                 <div className={styles.formGroup}>
-                    <input type="text" placeholder="First Name *" className={styles.input} required />
-                    <input type="text" placeholder="Last Name *" className={styles.input} required />
+                    <input
+                        type="text"
+                        name="firstname"
+                        placeholder="First Name *"
+                        className={styles.input}
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="lastname"
+                        placeholder="Last Name *"
+                        className={styles.input}
+                        value={formData.lastname}
+                        onChange={handleChange}
+                        required
+                    />
                 </div>
-                
-                <input type="email" placeholder="Email *" className={styles.input} required />
-                <input type="tel" placeholder="Phone *" className={styles.input} required />
-                
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email *"
+                    className={styles.input}
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="tel"
+                    name="phn" // UPDATED: Name changed to 'phn'
+                    placeholder="Phone *"
+                    className={styles.input}
+                    value={formData.phn} // UPDATED: Value changed to 'phn'
+                    onChange={handleChange}
+                    required
+                />
                 <div className={styles.formGroup}>
-                    <input type="text" placeholder="City" className={styles.input} />
-                    <select className={styles.select}>
+                    <select
+                        name="category"
+                        className={styles.select}
+                        value={formData.category}
+                        onChange={handleChange}
+                        required
+                    >
                         <option value="">Select Category *</option>
                         <option value="residence">Residence</option>
                         <option value="office">Office</option>
@@ -48,17 +106,26 @@ const ContactForm = () => {
                         <option value="architecture">Architecture</option>
                     </select>
                 </div>
-
-                <textarea placeholder="Your Message / Project Details" className={styles.textarea}></textarea>
-                
+                <textarea
+                    name="userdescription"
+                    placeholder="Your Message / Project Details"
+                    className={styles.textarea}
+                    value={formData.userdescription}
+                    onChange={handleChange}
+                    required
+                ></textarea>
                 <button type="submit" className={styles.submitButton}>
                     SUBMIT ENQUIRY
                 </button>
             </form>
-            
-            {/* Display submission status */}
             {status && (
-                <p style={{ marginTop: '1rem', fontSize: '1rem', color: status.startsWith('Thank') ? 'green' : 'red' }}>
+                <p
+                    style={{
+                        marginTop: '1rem',
+                        fontSize: '1rem',
+                        color: status.startsWith('Thank') ? 'green' : 'red',
+                    }}
+                >
                     {status}
                 </p>
             )}
@@ -66,7 +133,7 @@ const ContactForm = () => {
     );
 };
 
-// --- Contact Info Block Component ---
+// --- Contact Info Block Component (No changes needed) ---
 const ContactInfo = () => (
     <div className={styles.contactInfoContainer}>
         <div className={styles.infoBlock}>
@@ -105,7 +172,7 @@ const ContactInfo = () => (
 );
 
 
-// --- Main Contact Page Component ---
+// --- Main Contact Page Component (No changes needed) ---
 export default function ContactPage() {
     return (
         <div className={styles.container}>
