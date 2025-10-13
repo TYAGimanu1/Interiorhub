@@ -46,7 +46,7 @@ export default function WorkPage() {
   useEffect(() => {
     const fetchProjects = async () => {
       // FIX: Use the resilient utility for the fetch URL
-      const apiUrl = `${getBaseUrl()}/api/projects`; 
+      const apiUrl = `/api/projects`; 
 
       try {
         setLoading(true);
