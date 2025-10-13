@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   let attempt = 0;
 
   // Correctly querying the table within the 'ashley' schema
-  const queryText = 'SELECT * FROM ashley.project1';
+   const queryText = 'SELECT * FROM ashley.project1';
 
   while (attempt < retryAttempts) {
     try {
