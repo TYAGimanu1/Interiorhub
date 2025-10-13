@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+// Removed unused 'Image' import from 'next/image' as you are using <img> tags
 import styles from '@/styles/work.module.css';
-import { getBaseUrl } from '@/lib/utils';
+import { getBaseUrl } from '@/lib/utils'; // Uses the utility for correct base URL
+
 const HeroSection = () => (
   <div className={styles.heroSection}>
     <img
@@ -23,9 +24,10 @@ const ProjectCard = ({ project, index }) => (
     className={styles.projectCard}
     style={{ animationDelay: `${index * 0.1}s` }}
   >
-   
+    {/* CRITICAL CHECK: Ensure src={project.imageurl} matches the lowercase field name 
+        returned by PostgreSQL, which is guaranteed to be 'imageurl' */}
     <img
-      src={project.imageurl} // Ensure this matches the field name in the API response
+      src={project.imageurl} 
       alt={project.title}
       className={styles.projectImage}
     />
@@ -39,25 +41,46 @@ const ProjectCard = ({ project, index }) => (
 export default function WorkPage() {
   const [projects, setProjects] = useState([]);
   const [activeCategory, setActiveCategory] = useState('All');
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchProjects = async () => {
+      // FIX: Use the resilient utility for the fetch URL
+      const apiUrl = `${getBaseUrl()}/api/projects`; 
+
       try {
-        const response = await fetch("https://interiorhub.vercel.app/api/projects");
+        setLoading(true);
+        const response = await fetch(apiUrl);
+
+        // FIX 1: Throw error OR handle non-OK status
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          console.error(`Client Fetch Failed. Status: ${response.status}`);
+          setProjects([]);
+          return;
         }
+        
         const data = await response.json();
-        setProjects(data);
+
+        // FIX 2: CRITICAL: Ensure the response is an array before setting state
+        if (Array.isArray(data)) {
+            setProjects(data);
+        } else {
+            console.error('API response was not a valid array:', data);
+            setProjects([]); 
+        }
+
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching projects in work.js:', error);
+        setProjects([]);
+      } finally {
+        setLoading(false); // Stop loading regardless of success/failure
       }
     };
 
     fetchProjects();
   }, []);
 
-  const categories = ['All', ...new Set(projects.map((project) => project.category))];
+  const categories = ['All', ...new Set(projects.map((project) => project.category).filter(Boolean))];
 
   const filteredProjects = projects.filter(
     (project) => activeCategory === 'All' || project.category === activeCategory
@@ -85,14 +108,16 @@ export default function WorkPage() {
         </div>
 
         <div className={styles.projectGrid}>
-          {filteredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-
-          {filteredProjects.length === 0 && (
-            <p style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
-              No projects found in this category.
-            </p>
+          {loading ? (
+             <p style={{ gridColumn: '1 / -1', textAlign: 'center' }}>Loading projects...</p>
+          ) : filteredProjects.length > 0 ? (
+            filteredProjects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))
+          ) : (
+             <p style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
+               No projects found in this category.
+             </p>
           )}
         </div>
       </div>
