@@ -38,6 +38,7 @@ const CategoryPage = ({ projects }) => {
                   className={styles.projectImage}
                   width={300}
                   height={200}
+                  // The 'Image' component needs explicit width/height
                 />
                 <h2 className={styles.projectTitle}>{project.title}</h2>
              
@@ -51,15 +52,15 @@ const CategoryPage = ({ projects }) => {
 
 // --- Build Function: Generates all unique category paths at build time ---
 export async function getStaticPaths() {
-  const url = `https://interiorhub.vercel.app/api/projects`; 
+  // FIX 1: Use getBaseUrl() utility to get the correct build-time domain
+  const url = `${getBaseUrl()}/api/projects`; 
   
   try {
     const res = await fetch(url);
     
     // CRITICAL FIX: Check for successful response BEFORE parsing JSON
     if (!res.ok) {
-        console.error(`[getStaticPaths in [category].js] API Failure. Status: ${res.status} from URL: ${url}`);
-        // Return empty paths to prevent the build crash
+        console.error(`[getStaticPaths in [category].js] API Failure. Status: ${res.status}`);
         return { paths: [], fallback: false };
     }
     
@@ -77,25 +78,24 @@ export async function getStaticPaths() {
 
   } catch (error) {
     console.error(`[getStaticPaths in [category].js] Network Error: ${error.message}`);
-    // Return empty paths on network failure
     return { paths: [], fallback: false };
   }
 }
 
 // --- Build Function: Provides all project data as props ---
 export async function getStaticProps() {
-  const url = `$https://interiorhub.vercel.app/api/projects`;
+  // FIX 2: Correct URL construction: remove the leading '$' and use getBaseUrl()
+  const url = `${getBaseUrl()}/api/projects`;
   
   try {
     const res = await fetch(url);
   
     // CRITICAL FIX: Check for successful response BEFORE parsing JSON
     if (!res.ok) {
-       console.error(`[getStaticProps in [category].js] API Failure. Status: ${res.status} from URL: ${url}`);
-       // Return empty projects array to prevent component crash
+       console.error(`[getStaticProps in [category].js] API Failure. Status: ${res.status}`);
        return { 
            props: { projects: [] },
-           revalidate: 60, // Attempt to fetch data again later
+           revalidate: 60,
        };
     }
 
