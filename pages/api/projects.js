@@ -1,13 +1,16 @@
-// pages/api/project.js
 import { Pool } from 'pg';
 
 const pool = new Pool({
+  // Use the full connection string from your .env.local
   connectionString: process.env.DATABASE_URL,
-  // CRITICAL FIX: Explicitly allow self-signed certificates for Render connection
+  
+  // FIX: Explicitly tells Node to ignore self-signed certificate errors, 
+  // which is mandatory for many cloud providers like Render.
   ssl: {
     rejectUnauthorized: false, 
   },
-  max: 10,
+  
+  max: 10, 
   idleTimeoutMillis: 30000, 
   connectionTimeoutMillis: 5000, 
 });
@@ -16,7 +19,7 @@ export default async function handler(req, res) {
   const retryAttempts = 3;
   let attempt = 0;
 
-  // FIX: Query to fetch ALL projects (all IDs and data) from the correct table
+  // Correctly querying the table within the 'ashley' schema
   const queryText = 'SELECT * FROM ashley.project1';
 
   while (attempt < retryAttempts) {
@@ -26,7 +29,7 @@ export default async function handler(req, res) {
       return;
     } catch (error) {
       attempt++;
-      console.error(`Attempt ${attempt} - Error fetching all projects:`, {
+      console.error(`Attempt ${attempt} - Error fetching ${queryText}:`, {
         message: error.message,
         code: error.code,
       });
@@ -35,7 +38,7 @@ export default async function handler(req, res) {
         res.status(500).json({
           error: 'Internal Server Error - DB Connection Failed',
           details: {
-            message: error.message,
+            message: error.message, 
             code: error.code,
           },
         });
