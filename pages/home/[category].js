@@ -43,7 +43,7 @@ const CategoryPage = ({ projects }) => {
 
 export async function getStaticPaths() {
   // Fetch all unique categories to generate paths
-  const res = await fetch('http://localhost:3000/api/projects');
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`);
   const projects = await res.json();
 
   const categories = [...new Set(projects.map((project) => project.category))];
@@ -57,7 +57,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps() {
   // Fetch all projects to pass as props
-  const res = await fetch('http://localhost:3000/api/projects');
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`);
   const projects = await res.json();
 
   return { props: { projects } };

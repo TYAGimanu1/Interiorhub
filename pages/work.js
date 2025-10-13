@@ -43,7 +43,7 @@ export default function WorkPage() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('/api/projects');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
