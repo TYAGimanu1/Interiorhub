@@ -1,24 +1,32 @@
+// pages/work/[slug].js
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '@/styles/slug.module.css';
 import Image from 'next/image'; 
 import { getBaseUrl } from '@/lib/utils';
+
 const ProjectDetails = ({ projects }) => {
   const router = useRouter();
   const { slug } = router.query;
 
   // Find the project based on the slug
-  const project = projects.find((p) => p.slug === slug);
+  // Use optional chaining for safety in case projects is null/undefined
+  const project = projects?.find((p) => p.slug === slug);
 
-  const [mainImage, setMainImage] = useState(project?.imageurl);
+  // Use || '' for initial state safety if project data isn't available
+  const [mainImage, setMainImage] = useState(project?.imageurl || '');
   const [additionalImages, setAdditionalImages] = useState([
-    project?.img1,
-    project?.img2,
-    project?.img3,
-  ]);
+    project?.img1 || '',
+    project?.img2 || '',
+    project?.img3 || '',
+  ].filter(Boolean)); // Filter out empty strings
+
+  if (router.isFallback) {
+      return <h1>Loading Project...</h1>;
+  }
 
   if (!project) {
-    return <p>Project not found</p>;
+    return <p>Project not found or data is unavailable.</p>;
   }
 
   const handleImageClick = (index) => {
@@ -43,6 +51,7 @@ const ProjectDetails = ({ projects }) => {
           className={styles.projectImage}
           width={700}
           height={500}
+          priority // Ensure main image loads quickly
         />
       </div>
 
@@ -67,24 +76,57 @@ const ProjectDetails = ({ projects }) => {
   );
 };
 
+
 export async function getStaticPaths() {
-  // Fetch all projects to generate paths
-  const res = await fetch(`${getBaseUrl()}/api/projects`);
-  const projects = await res.json();
+  const url = `${getBaseUrl()}/api/projects`;
+  
+  try {
+    const res = await fetch(url);
 
-  const paths = projects.map((project) => ({
-    params: { slug: project.slug },
-  }));
+    // CRITICAL FIX: CHECK STATUS BEFORE PARSING
+    if (!res.ok) {
+        console.error(`[getStaticPaths] API Failure. Status: ${res.status} from URL: ${url}`);
+        // If the API fails, return empty paths to allow the build to finish
+        return { paths: [], fallback: false };
+    }
+    
+    const projects = await res.json();
 
-  return { paths, fallback: false };
+    const paths = projects.map((project) => ({
+      params: { slug: project.slug },
+    }));
+
+    return { paths, fallback: false };
+
+  } catch (error) {
+    console.error(`[getStaticPaths] Network/Parsing Error: ${error.message}`);
+    return { paths: [], fallback: false };
+  }
 }
 
-export async function getStaticProps() {
-  // Fetch all projects to pass as props
-  const res = await fetch(`${getBaseUrl()}/api/projects`);
-  const projects = await res.json();
+export async function getStaticProps({ params }) {
+    const url = `${getBaseUrl()}/api/projects`;
+    
+    try {
+        const res = await fetch(url);
 
-  return { props: { projects } };
+        // CRITICAL FIX: CHECK STATUS BEFORE PARSING
+        if (!res.ok) {
+            console.error(`[getStaticProps] API Failure. Status: ${res.status} from URL: ${url}`);
+            // Return empty projects array to prevent component crash
+            return { props: { projects: [] }, revalidate: 60 };
+        }
+
+        const projects = await res.json();
+
+        return { 
+            props: { projects },
+            revalidate: 60, // Recommended
+        };
+    } catch (error) {
+         console.error(`[getStaticProps] Network/Parsing Error: ${error.message}`);
+         return { props: { projects: [] }, revalidate: 60 };
+    }
 }
 
 export default ProjectDetails;
