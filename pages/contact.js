@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '@/styles/contact.module.css';
-
+import { getBaseUrl } from '@/lib/utils';
 // --- Contact Form Component ---
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -29,7 +29,7 @@ const ContactForm = () => {
 
         try {
             // UPDATED: Corrected endpoint to lowercase '/api/saveuser'
-            const response = await axios.post('/api/saveUser', formData); 
+            const response = await axios.post(`${getBaseUrl()}/api/saveUser`, formData); 
             
             // Success check using standard HTTP status codes
             if (response.status === 201 || response.status === 200) { 

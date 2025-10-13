@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '@/styles/work.module.css';
-
+import { getBaseUrl } from '@/lib/utils';
 const HeroSection = () => (
   <div className={styles.heroSection}>
     <img
@@ -43,7 +43,7 @@ export default function WorkPage() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch('/api/projects');
+        const response = await fetch(`${getBaseUrl()}/api/projects`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

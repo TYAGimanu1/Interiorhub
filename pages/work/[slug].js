@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '@/styles/slug.module.css';
 import Image from 'next/image'; 
-
+import { getBaseUrl } from '@/lib/utils';
 const ProjectDetails = ({ projects }) => {
   const router = useRouter();
   const { slug } = router.query;
@@ -69,7 +69,7 @@ const ProjectDetails = ({ projects }) => {
 
 export async function getStaticPaths() {
   // Fetch all projects to generate paths
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`);
+  const res = await fetch(`${getBaseUrl()}/api/projects`);
   const projects = await res.json();
 
   const paths = projects.map((project) => ({
@@ -81,7 +81,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps() {
   // Fetch all projects to pass as props
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`);
+  const res = await fetch(`${getBaseUrl()}/api/projects`);
   const projects = await res.json();
 
   return { props: { projects } };
