@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import styles from '@/styles/slug.module.css';
 import Image from 'next/image';
+import { getBaseUrl } from '@/lib/utils';
 
 const ProjectDetails = ({ project }) => {
   const router = useRouter();
@@ -55,7 +56,8 @@ const ProjectDetails = ({ project }) => {
 
 export async function getStaticPaths() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`);
+    const baseUrl = getBaseUrl();
+    const res = await fetch(`${baseUrl}/api/projects`);
     if (!res.ok) {
       console.error(`[getStaticPaths] API Failure. Status: ${res.status}`);
       return { paths: [], fallback: false };
@@ -72,7 +74,8 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { slug } = params;
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects?slug=${slug}`);
+    const baseUrl = getBaseUrl();
+    const res = await fetch(`${baseUrl}/api/projects?slug=${slug}`);
     if (!res.ok) {
       console.error(`[getStaticProps] API Failure. Status: ${res.status}`);
       return { props: { project: null }, revalidate: 60 };
