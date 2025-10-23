@@ -29,7 +29,7 @@ const ContactForm = () => {
 
         try {
             // UPDATED: Corrected endpoint to lowercase '/api/saveuser'
-            const response = await axios.post(`${getBaseUrl()}/api/saveUser`, formData); 
+            const response = await axios.post(`https://interiorhub.vercel.app/api/saveUser`, formData); 
             
             // Success check using standard HTTP status codes
             if (response.status === 201 || response.status === 200) { 
