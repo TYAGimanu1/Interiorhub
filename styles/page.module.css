@@ -514,11 +514,11 @@
     cursor: pointer;
     display: block;
     height: 16rem; /* Adjust height as needed */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgb(255, 255, 255);
 }
 
 .projectCard:hover {
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+    box-shadow: 0 15px 30px rgb(255, 255, 255); /* Stronger shadow on hover */
     transform: scale(1.08) rotate(1deg); /* Add scaling and rotation */
 }
 
@@ -538,7 +538,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  background: rgba(255, 255, 255, 0.6); /* Semi-transparent background */
   color: white;
   padding: 1rem;
   text-align: center;
