@@ -79,7 +79,7 @@ const ProjectDetails = ({ projects }) => {
 
 export async function getStaticPaths() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`);
+    const res = await fetch(`/api/projects`);
     if (!res.ok) {
       console.error(`[getStaticPaths] API Failure. Status: ${res.status}`);
       return { paths: [], fallback: false };
@@ -94,7 +94,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-    const url = `${getBaseUrl()}/api/projects`;
+    const url = `/api/projects`;
     
     try {
         const res = await fetch(url);
