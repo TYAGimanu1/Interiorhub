@@ -12,36 +12,21 @@ const pool = new Pool({
 });
 
 export default async function handler(req, res) {
-  const { category } = req.query; // Extract category from query parameters
-  const retryAttempts = 3;
-  let attempt = 0;
+  const { slug } = req.query; // Extract slug from query parameters
+  if (!slug) {
+    res.status(400).json({ error: 'Slug is required' });
+    return;
+  }
 
-  // Adjust query to filter by category if provided
-  const queryText = category
-    ? 'SELECT * FROM ashley.project1 WHERE category = $1'
-    : 'SELECT * FROM ashley.project1';
-  const queryParams = category ? [category] : [];
-
-  while (attempt < retryAttempts) {
-    try {
-      const result = await pool.query(queryText, queryParams);
-      if (result.rows.length === 0) {
-        res.status(404).json({ error: 'No projects found for the specified category.' });
-        return;
-      }
-      res.status(200).json(result.rows);
+  try {
+    const result = await pool.query('SELECT * FROM ashley.project1 WHERE slug = $1', [slug]);
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: 'Project not found' });
       return;
-    } catch (error) {
-      attempt++;
-      console.error(`Attempt ${attempt} - Error fetching projects:`, error.message);
-
-      if (attempt >= retryAttempts) {
-        res.status(500).json({
-          error: 'Internal Server Error',
-          details: error.message,
-        });
-        return;
-      }
     }
+    res.status(200).json(result.rows[0]);
+  } catch (error) {
+    console.error('Error fetching project:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }

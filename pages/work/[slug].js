@@ -86,6 +86,7 @@ export async function getStaticPaths() {
     }
     const projects = await res.json();
     const paths = projects.map((project) => ({ params: { slug: project.slug } }));
+    console.log('Generated paths:', paths);
     return { paths, fallback: false };
   } catch (error) {
     console.error(`[getStaticPaths] Network/Parsing Error: ${error.message}`);
