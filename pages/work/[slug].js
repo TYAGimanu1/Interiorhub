@@ -57,17 +57,22 @@ const ProjectDetails = ({ project }) => {
 export async function getStaticPaths() {
   try {
     const baseUrl = getBaseUrl();
+    console.log(`[getStaticPaths] Base URL: ${baseUrl}`); // Log base URL for debugging
+
     const res = await fetch(`${baseUrl}/api/projects`);
     if (!res.ok) {
       console.error(`[getStaticPaths] API Failure. Status: ${res.status}`);
-      return { paths: [], fallback: false };
+      return { paths: [], fallback: true }; // Enable fallback for dynamic generation
     }
+
     const projects = await res.json();
+    console.log(`[getStaticPaths] Projects:`, projects); // Log fetched projects for debugging
+
     const paths = projects.map((project) => ({ params: { slug: project.slug } }));
-    return { paths, fallback: false };
+    return { paths, fallback: true }; // Enable fallback for dynamic generation
   } catch (error) {
     console.error(`[getStaticPaths] Network/Parsing Error: ${error.message}`);
-    return { paths: [], fallback: false };
+    return { paths: [], fallback: true }; // Enable fallback for dynamic generation
   }
 }
 
