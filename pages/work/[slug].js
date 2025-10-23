@@ -96,6 +96,8 @@ export async function getStaticPaths() {
       params: { slug: project.slug },
     }));
 
+    console.log('Generated paths:', paths); // Log generated paths for debugging
+
     return { paths, fallback: false };
 
   } catch (error) {
@@ -118,6 +120,8 @@ export async function getStaticProps({ params }) {
         }
 
         const projects = await res.json();
+
+        console.log('Fetched project data:', projects); // Log fetched data for debugging
 
         return { 
             props: { projects },
