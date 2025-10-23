@@ -118,7 +118,7 @@ const ProjectsSection = () => {
             >
               <div className={styles.projectOverlay}>
                 <img 
-                  src="https://i.pinimg.com/originals/98/5d/71/985d7114e032ca660313cffbf0fa4e47.jpg"
+                  src="https://i.pinimg.com/original
                   alt="Office"
                   style={{ width: '100%', height: '20rem', objectFit: 'cover' }}
                 />
@@ -163,19 +163,21 @@ const ContactFormSection = () => (
       <p className={styles.formDescription}>
         We&apos;re keen to start working with you. Please fill in your details so we can get back to you.
       </p>
-      <form className={styles.form} aria-label="Contact Form">
+      <form className={styles.form} aria-label="Contact Form" method="POST" action="/api/saveUser">
         <div className={styles.formGroup}>
-          <input type="text" placeholder="First Name *" className={styles.input} required aria-required="true" aria-label="First Name" />
-          <input type="text" placeholder="Last Name *" className={styles.input} required aria-required="true" aria-label="Last Name" />
+          <input type="text" name="firstname" placeholder="First Name *" className={styles.input} required aria-required="true" aria-label="First Name" />
+          <input type="text" name="lastname" placeholder="Last Name *" className={styles.input} required aria-required="true" aria-label="Last Name" />
         </div>
-        <input type="email" placeholder="Email *" className={styles.input} required aria-required="true" aria-label="Email Address" />
-        <input type="tel" placeholder="Phone *" className={styles.input} required aria-required="true" aria-label="Phone Number" />
-        <select className={styles.select} aria-label="Category">
-          <option value="">Select Category (e.g., Residence, Office)</option>
+        <input type="email" name="email" placeholder="Email *" className={styles.input} required aria-required="true" aria-label="Email Address" />
+        <input type="tel" name="phn" placeholder="Phone *" className={styles.input} required aria-required="true" aria-label="Phone Number" />
+        <select name="category" className={styles.select} aria-label="Category" required>
+          <option value="">Select Category *</option>
           <option value="residence">Residence</option>
           <option value="office">Office</option>
           <option value="clubhouse">Clubhouse</option>
+          <option value="architecture">Architecture</option>
         </select>
+        <textarea name="userdescription" placeholder="Your Message / Project Details" className={styles.textarea} required></textarea>
         <button 
           type="submit" 
           className={styles.submitButton}
