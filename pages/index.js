@@ -156,39 +156,69 @@ const ProjectsSection = () => {
   );
 };
 
-const ContactFormSection = () => (
-  <section className={styles.section} aria-labelledby="contact-form-title">
-    <div className={styles.contactFormSection}>
-      <SectionTitle id="contact-form-title">Design With Us</SectionTitle>
-      <p className={styles.formDescription}>
-        We&apos;re keen to start working with you. Please fill in your details so we can get back to you.
-      </p>
-      <form className={styles.form} aria-label="Contact Form" method="POST" action="/api/saveUser">
-        <div className={styles.formGroup}>
-          <input type="text" name="firstname" placeholder="First Name *" className={styles.input} required aria-required="true" aria-label="First Name" />
-          <input type="text" name="lastname" placeholder="Last Name *" className={styles.input} required aria-required="true" aria-label="Last Name" />
-        </div>
-        <input type="email" name="email" placeholder="Email *" className={styles.input} required aria-required="true" aria-label="Email Address" />
-        <input type="tel" name="phn" placeholder="Phone *" className={styles.input} required aria-required="true" aria-label="Phone Number" />
-        <select name="category" className={styles.select} aria-label="Category" required>
-          <option value="">Select Category *</option>
-          <option value="residence">Residence</option>
-          <option value="office">Office</option>
-          <option value="clubhouse">Clubhouse</option>
-          <option value="architecture">Architecture</option>
-        </select>
-        <textarea name="userdescription" placeholder="Your Message / Project Details" className={styles.textarea} required></textarea>
-        <button 
-          type="submit" 
-          className={styles.submitButton}
-          aria-label="Submit Enquiry"
-        >
-          SUBMIT ENQUIRY
-        </button>
-      </form>
-    </div>
-  </section>
-);
+const ContactFormSection = () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch('/api/saveUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert('Thank you! Your message has been sent.');
+        event.target.reset(); // Clear the form
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.details || 'Failed to submit the form.'}`);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('An unexpected error occurred. Please try again later.');
+    }
+  };
+
+  return (
+    <section className={styles.section} aria-labelledby="contact-form-title">
+      <div className={styles.contactFormSection}>
+        <SectionTitle id="contact-form-title">Design With Us</SectionTitle>
+        <p className={styles.formDescription}>
+          We&apos;re keen to start working with you. Please fill in your details so we can get back to you.
+        </p>
+        <form className={styles.form} aria-label="Contact Form" onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <input type="text" name="firstname" placeholder="First Name *" className={styles.input} required aria-required="true" aria-label="First Name" />
+            <input type="text" name="lastname" placeholder="Last Name *" className={styles.input} required aria-required="true" aria-label="Last Name" />
+          </div>
+          <input type="email" name="email" placeholder="Email *" className={styles.input} required aria-required="true" aria-label="Email Address" />
+          <input type="tel" name="phn" placeholder="Phone *" className={styles.input} required aria-required="true" aria-label="Phone Number" />
+          <select name="category" className={styles.select} aria-label="Category" required>
+            <option value="">Select Category *</option>
+            <option value="residence">Residence</option>
+            <option value="office">Office</option>
+            <option value="clubhouse">Clubhouse</option>
+            <option value="architecture">Architecture</option>
+          </select>
+          <textarea name="userdescription" placeholder="Your Message / Project Details" className={styles.textarea} required></textarea>
+          <button 
+            type="submit" 
+            className={styles.submitButton}
+            aria-label="Submit Enquiry"
+          >
+            SUBMIT ENQUIRY
+          </button>
+        </form>
+      </div>
+    </section>
+  );
+};
 
 
 export default function Home() {
