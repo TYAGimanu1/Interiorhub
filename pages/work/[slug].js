@@ -78,28 +78,15 @@ const ProjectDetails = ({ projects }) => {
 
 
 export async function getStaticPaths() {
-  const url = `${getBaseUrl()}/api/projects`;
-  
   try {
-    const res = await fetch(url);
-
-    // CRITICAL FIX: CHECK STATUS BEFORE PARSING
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/projects`);
     if (!res.ok) {
-        console.error(`[getStaticPaths] API Failure. Status: ${res.status} from URL: ${url}`);
-        // If the API fails, return empty paths to allow the build to finish
-        return { paths: [], fallback: false };
+      console.error(`[getStaticPaths] API Failure. Status: ${res.status}`);
+      return { paths: [], fallback: false };
     }
-    
     const projects = await res.json();
-
-    const paths = projects.map((project) => ({
-      params: { slug: project.slug },
-    }));
-
-    console.log('Generated paths:', paths); // Log generated paths for debugging
-
+    const paths = projects.map((project) => ({ params: { slug: project.slug } }));
     return { paths, fallback: false };
-
   } catch (error) {
     console.error(`[getStaticPaths] Network/Parsing Error: ${error.message}`);
     return { paths: [], fallback: false };
