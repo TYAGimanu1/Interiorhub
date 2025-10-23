@@ -56,8 +56,7 @@ const ProjectDetails = ({ project }) => {
 
 export async function getStaticPaths() {
   try {
-    const baseUrl = getBaseUrl();
-    console.log(`[getStaticPaths] Base URL: ${baseUrl}`); // Log base URL for debugging
+   // Log base URL for debugging
 
     const res = await fetch(`https://interiorhub.vercel.app/api/projects`);
     if (!res.ok) {
