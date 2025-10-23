@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import styles from '@/styles/category.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getBaseUrl } from '@/lib/utils'; // Utility to handle Vercel's environment URL
 
 const CategoryPage = ({ projects }) => {
   const router = useRouter();
@@ -51,59 +50,47 @@ const CategoryPage = ({ projects }) => {
 
 // --- Build Function: Generates all unique category paths at build time ---
 export async function getStaticPaths() {
-  // FIX: Use getBaseUrl() utility for resilient fetching during the build.
-  const url = `${getBaseUrl()}/api/projects`; 
-  
+  const url = `https://interiorhub.vercel.app/api/projects`;
+
   try {
     const res = await fetch(url);
-    
-    // CRITICAL: Check for successful response BEFORE parsing JSON
+
     if (!res.ok) {
-        console.error(`[getStaticPaths in [category].js] API Failure. Status: ${res.status}`);
-        return { paths: [], fallback: false };
+      console.error(`[getStaticPaths in [category].js] API Failure. Status: ${res.status}`);
+      return { paths: [], fallback: true }; // Enable fallback for dynamic generation
     }
-    
+
     const projects = await res.json();
 
-    // Collect all unique categories
     const categories = [...new Set(projects.map((project) => project.category).filter(Boolean))];
 
-    // Generate paths using the categories as params
     const paths = categories.map((category) => ({
       params: { category },
     }));
 
-    return { paths: paths.length > 0 ? paths : [], fallback: false };
-
+    return { paths, fallback: true }; // Enable fallback for dynamic generation
   } catch (error) {
     console.error(`[getStaticPaths in [category].js] Network Error: ${error.message}`);
-    return { paths: [], fallback: false };
+    return { paths: [], fallback: true }; // Enable fallback for dynamic generation
   }
 }
 
 // --- Build Function: Provides all project data as props ---
-export async function getStaticProps() {
-  // FIX: Use getBaseUrl() utility for resilient fetching during the build.
-  const url = `${getBaseUrl()}/api/projects`;
-  
+export async function getStaticProps({ params }) {
+  const { category } = params;
+  const url = `https://interiorhub.vercel.app/api/projects?category=${category}`;
+
   try {
     const res = await fetch(url);
-  
-    // CRITICAL: Check for successful response BEFORE parsing JSON
+
     if (!res.ok) {
-       console.error(`[getStaticProps in [category].js] API Failure. Status: ${res.status}`);
-       return { 
-           props: { projects: [] },
-           revalidate: 60,
-       };
+      console.error(`[getStaticProps in [category].js] API Failure. Status: ${res.status}`);
+      return { props: { projects: [] }, revalidate: 60 };
     }
 
     const projects = await res.json();
 
-    return { 
-      props: { projects }, 
-      revalidate: 60,
-    };
+    return { props: { projects }, revalidate: 60 };
   } catch (error) {
     console.error(`[getStaticProps in [category].js] Network Error: ${error.message}`);
     return { props: { projects: [] }, revalidate: 60 };
