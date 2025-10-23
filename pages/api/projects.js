@@ -23,10 +23,12 @@ export default async function handler(req, res) {
         return;
       }
       res.status(200).json(result.rows[0]);
+      return;
     } else {
       // Fetch all projects for the work page
       const result = await pool.query('SELECT * FROM ashley.project1');
       res.status(200).json(result.rows);
+      return;
     }
   } catch (error) {
     console.error('Error fetching project(s):', error.message);
