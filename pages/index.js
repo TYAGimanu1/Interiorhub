@@ -118,7 +118,7 @@ const ProjectsSection = () => {
             >
               <div className={styles.projectOverlay}>
                 <img 
-                  src="https://i.pinimg.com/original
+                  src="https://i.pinimg.com/originals/98/5d/71/985d7114e032ca660313cffbf0fa4e47.jpg"
                   alt="Office"
                   style={{ width: '100%', height: '20rem', objectFit: 'cover' }}
                 />
