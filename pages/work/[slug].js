@@ -1,57 +1,35 @@
 // pages/work/[slug].js
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import styles from '@/styles/slug.module.css';
-import Image from 'next/image'; 
-import { getBaseUrl } from '@/lib/utils';
+import Image from 'next/image';
 
-const ProjectDetails = ({ projects }) => {
+const ProjectDetails = ({ project }) => {
   const router = useRouter();
-  const { slug } = router.query;
-
-  // Find the project based on the slug
-  // Use optional chaining for safety in case projects is null/undefined
-  const project = projects?.find((p) => p.slug === slug);
-
-  // Use || '' for initial state safety if project data isn't available
-  const [mainImage, setMainImage] = useState(project?.imageurl || '');
-  const [additionalImages, setAdditionalImages] = useState([
-    project?.img1 || '',
-    project?.img2 || '',
-    project?.img3 || '',
-  ].filter(Boolean)); // Filter out empty strings
 
   if (router.isFallback) {
-      return <h1>Loading Project...</h1>;
+    return <h1>Loading Project...</h1>;
   }
 
   if (!project) {
     return <p>Project not found or data is unavailable.</p>;
   }
 
-  const handleImageClick = (index) => {
-    const newImages = [...additionalImages];
-    const clickedImage = newImages[index];
-
-    // Swap the clicked image with the main image
-    newImages[index] = mainImage;
-    setMainImage(clickedImage);
-    setAdditionalImages(newImages);
-  };
+  const { title, category, description, imageurl, img1, img2, img3 } = project;
+  const additionalImages = [img1, img2, img3].filter(Boolean);
 
   return (
     <div className={styles.projectDetails}>
-      <h1 className={styles.projectTitle}>{project.title}</h1>
-      <p className={styles.projectCategory}>{project.category}</p>
+      <h1 className={styles.projectTitle}>{title}</h1>
+      <p className={styles.projectCategory}>{category}</p>
 
       <div className={styles.projectImageContainer}>
         <Image
-          src={mainImage}
-          alt={project.title}
+          src={imageurl}
+          alt={title}
           className={styles.projectImage}
           width={700}
           height={500}
-          priority // Ensure main image loads quickly
+          priority
         />
       </div>
 
@@ -64,29 +42,26 @@ const ProjectDetails = ({ projects }) => {
             className={styles.thumbnail}
             width={100}
             height={100}
-            onClick={() => handleImageClick(index)}
           />
         ))}
       </div>
 
       <h1>About</h1>
       <hr />
-      <p className={styles.projectDescription}>{project.description}</p>
+      <p className={styles.projectDescription}>{description}</p>
     </div>
   );
 };
 
-
 export async function getStaticPaths() {
   try {
-    const res = await fetch(`/api/projects`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`);
     if (!res.ok) {
       console.error(`[getStaticPaths] API Failure. Status: ${res.status}`);
       return { paths: [], fallback: false };
     }
     const projects = await res.json();
     const paths = projects.map((project) => ({ params: { slug: project.slug } }));
-    console.log('Generated paths:', paths);
     return { paths, fallback: false };
   } catch (error) {
     console.error(`[getStaticPaths] Network/Parsing Error: ${error.message}`);
@@ -95,30 +70,19 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-    const url = `/api/projects`;
-    
-    try {
-        const res = await fetch(url);
-
-        // CRITICAL FIX: CHECK STATUS BEFORE PARSING
-        if (!res.ok) {
-            console.error(`[getStaticProps] API Failure. Status: ${res.status} from URL: ${url}`);
-            // Return empty projects array to prevent component crash
-            return { props: { projects: [] }, revalidate: 60 };
-        }
-
-        const projects = await res.json();
-
-        console.log('Fetched project data:', projects); // Log fetched data for debugging
-
-        return { 
-            props: { projects },
-            revalidate: 60, // Recommended
-        };
-    } catch (error) {
-         console.error(`[getStaticProps] Network/Parsing Error: ${error.message}`);
-         return { props: { projects: [] }, revalidate: 60 };
+  const { slug } = params;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects?slug=${slug}`);
+    if (!res.ok) {
+      console.error(`[getStaticProps] API Failure. Status: ${res.status}`);
+      return { props: { project: null }, revalidate: 60 };
     }
+    const project = await res.json();
+    return { props: { project }, revalidate: 60 };
+  } catch (error) {
+    console.error(`[getStaticProps] Network/Parsing Error: ${error.message}`);
+    return { props: { project: null }, revalidate: 60 };
+  }
 }
 
 export default ProjectDetails;
