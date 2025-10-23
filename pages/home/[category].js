@@ -50,10 +50,10 @@ const CategoryPage = ({ projects }) => {
 
 // --- Build Function: Generates all unique category paths at build time ---
 export async function getStaticPaths() {
-  const url = `https://interiorhub.vercel.app/api/projects`;
+
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(`https://interiorhub.vercel.app/api/projects`);
 
     if (!res.ok) {
       console.error(`[getStaticPaths in [category].js] API Failure. Status: ${res.status}`);
@@ -81,7 +81,7 @@ export async function getStaticProps({ params }) {
   const url = `https://interiorhub.vercel.app/api/projects?category=${category}`;
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(`https://interiorhub.vercel.app/api/projects?category=${category}`);
 
     if (!res.ok) {
       console.error(`[getStaticProps in [category].js] API Failure. Status: ${res.status}`);
