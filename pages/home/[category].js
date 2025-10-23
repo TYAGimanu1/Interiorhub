@@ -4,11 +4,11 @@ import styles from '@/styles/category.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const CategoryPage = ({ projects }) => {
+const CategoryPage = ({ projects = [] }) => {
   const router = useRouter();
   const { category } = router.query;
-  
-  // Filter projects based on the category from the router query
+
+  // Ensure projects is always an array
   const filteredProjects = projects.filter(
     (project) => project.category && category && project.category.toLowerCase() === category.toLowerCase()
   );
@@ -81,7 +81,7 @@ export async function getStaticProps({ params }) {
   const url = `https://interiorhub.vercel.app/api/projects?category=${category}`;
 
   try {
-    const res = await fetch(`https://interiorhub.vercel.app/api/projects?category=${category}`);
+    const res = await fetch(url);
 
     if (!res.ok) {
       console.error(`[getStaticProps in [category].js] API Failure. Status: ${res.status}`);
@@ -90,7 +90,7 @@ export async function getStaticProps({ params }) {
 
     const projects = await res.json();
 
-    return { props: { projects }, revalidate: 60 };
+    return { props: { projects: projects || [] }, revalidate: 60 };
   } catch (error) {
     console.error(`[getStaticProps in [category].js] Network Error: ${error.message}`);
     return { props: { projects: [] }, revalidate: 60 };
