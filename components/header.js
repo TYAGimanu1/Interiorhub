@@ -23,7 +23,7 @@ const closeMenu = () => {
        <header className={styles.header} aria-label="Main Navigation">
     <div className={styles.headerContent}>
       <div className={styles.logo} aria-label="Ashleys Logo">
-        ASHLEYS
+        Alankar
       </div>
       <button
           className={styles.menuToggle}
