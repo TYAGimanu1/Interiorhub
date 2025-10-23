@@ -80,12 +80,18 @@ export async function getStaticProps({ params }) {
   const { slug } = params;
   try {
     const baseUrl = getBaseUrl();
-    const res = await fetch(`${baseUrl}/api/projects?slug=${slug}`);
+    const apiUrl = `${baseUrl}/api/projects?slug=${slug}`;
+    console.log(`[getStaticProps] Fetching project from: ${apiUrl}`); // Log API URL
+
+    const res = await fetch(apiUrl);
     if (!res.ok) {
       console.error(`[getStaticProps] API Failure. Status: ${res.status}`);
       return { props: { project: null }, revalidate: 60 };
     }
+
     const project = await res.json();
+    console.log(`[getStaticProps] Fetched project:`, project); // Log fetched project
+
     return { props: { project }, revalidate: 60 };
   } catch (error) {
     console.error(`[getStaticProps] Network/Parsing Error: ${error.message}`);
