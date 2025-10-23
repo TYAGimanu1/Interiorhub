@@ -3,40 +3,41 @@ import { Pool } from 'pg';
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // CRITICAL: Must be false for Render's SSL certificates
   ssl: {
-    rejectUnauthorized: false, 
+    rejectUnauthorized: false, // Allow self-signed certificates
   },
-  max: 10, 
-  idleTimeoutMillis: 30000, 
-  // Increase connection timeout for Vercel cold starts
-  connectionTimeoutMillis: 5000, 
+  max: 10, // Maximum number of connections
+  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
+  connectionTimeoutMillis: 5000, // Return an error after 5 seconds if connection cannot be established
 });
 
 export default async function handler(req, res) {
+  const { category } = req.query; // Extract category from query parameters
   const retryAttempts = 3;
   let attempt = 0;
 
-  // FIX: Use the correct schema and table name
-  const queryText = 'SELECT * FROM ashley.project1'; 
+  // Adjust query to filter by category if provided
+  const queryText = category
+    ? 'SELECT * FROM ashley.project1 WHERE category = $1'
+    : 'SELECT * FROM ashley.project1';
+  const queryParams = category ? [category] : [];
 
   while (attempt < retryAttempts) {
     try {
-      const result = await pool.query(queryText);
-      // Ensure the array is not empty before sending (optional check)
+      const result = await pool.query(queryText, queryParams);
       if (result.rows.length === 0) {
-          console.warn("Database returned 0 rows. Check 'ashley.project1' data.");
+        res.status(404).json({ error: 'No projects found for the specified category.' });
+        return;
       }
       res.status(200).json(result.rows);
       return;
     } catch (error) {
       attempt++;
-      console.error(`Attempt ${attempt} - Runtime DB Error:`, error.message);
+      console.error(`Attempt ${attempt} - Error fetching projects:`, error.message);
 
       if (attempt >= retryAttempts) {
-        // Return 500 status if DB connection permanently fails
         res.status(500).json({
-          error: 'Internal Server Error - Database Unavailable at Runtime',
+          error: 'Internal Server Error',
           details: error.message,
         });
         return;
