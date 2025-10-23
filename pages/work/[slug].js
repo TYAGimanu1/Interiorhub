@@ -59,7 +59,7 @@ export async function getStaticPaths() {
     const baseUrl = getBaseUrl();
     console.log(`[getStaticPaths] Base URL: ${baseUrl}`); // Log base URL for debugging
 
-    const res = await fetch(`${baseUrl}/api/projects`);
+    const res = await fetch(`https://interiorhub.vercel.app/api/projects`);
     if (!res.ok) {
       console.error(`[getStaticPaths] API Failure. Status: ${res.status}`);
       return { paths: [], fallback: true }; // Enable fallback for dynamic generation
@@ -80,7 +80,7 @@ export async function getStaticProps({ params }) {
   const { slug } = params;
   try {
     const baseUrl = getBaseUrl();
-    const apiUrl = `${baseUrl}/api/projects?slug=${slug}`;
+    const apiUrl = `https://interiorhub.vercel.app/api/projects?slug=${slug}`;
     console.log(`[getStaticProps] Fetching project from: ${apiUrl}`); // Log API URL
 
     const res = await fetch(apiUrl);
