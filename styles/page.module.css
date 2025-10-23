@@ -487,77 +487,48 @@
 }
 
 @media (max-width: 768px) {
+  .projectContent {
+    position: relative;
+    bottom: unset;
+    left: unset;
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .projectTitle {
+    font-size: 1.5rem; /* Match work page project title size */
+    font-weight: bold;
+    margin: 0.5rem 0;
+    color: var(--ashleys-gold); /* Highlight title */
+  }
+
+  .projectCount {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    color: var(--ashleys-black); /* Ensure visibility */
+  }
+
   .projectGrid {
-    display: flex;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    position: relative;
-    
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 
-    flex-wrap: wrap;
-    min-height: 40vh; /* Ensure space for content */
-}
-
-.projectCard {
-    background-color: #f4f4f4;
-    overflow: hidden;
-    width: 30%;
-    position: relative;
-    /* Animation: Fade-in effect */
-    opacity: 0;
-    transform: translateY(20px);
-    animation-fill-mode: forwards;
-    animation-name: projectFadeIn;
+  .projectCard {
+    width: 100%;
+    margin: 0 auto;
     border-radius: 10px;
-    animation-duration: 0.5s;
-    transition: box-shadow 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    cursor: pointer;
-    display: block;
-    height: 16rem; /* Adjust height as needed */
-    box-shadow: 0 4px 8px rgb(255, 255, 255);
-}
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
 
-.projectCard:hover {
-    box-shadow: 0 15px 30px rgb(255, 255, 255); /* Stronger shadow on hover */
-    transform: scale(1.08) rotate(1deg); /* Add scaling and rotation */
-}
-
-.projectImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease; /* Optional: Add a subtle zoom effect */
-}
-
-.projectCard:hover .projectImage {
-  transform: scale(1.1); /* Slight zoom effect on the image */
-}
-
-.projectInfo {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.6); /* Semi-transparent background */
-  color: white;
-  padding: 1rem;
-  text-align: center;
-  opacity: 1; /* Ensure visibility */
-  transition: opacity 0.3s ease;
-}
-
-.projectCard:hover .projectInfo {
-  opacity: 1; /* Ensure it becomes fully visible on hover */
-}
-
-.projectTitle {
-  font-size: 1.25rem; /* Adjust font size */
-  font-weight: bold;
-  margin: 0;
-}
-
-.projectCategory {
-  font-size: 1rem;
-  margin: 0.5rem 0 0;
-}
+  .projectCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
 }
